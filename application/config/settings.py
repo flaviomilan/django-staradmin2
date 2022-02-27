@@ -9,12 +9,17 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-from pathlib import Path
-
 import environ
 
+from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+
+
 env = environ.Env(
-    DEBUG=(bool, False), EMAIL_PORT=(int, 587), EMAIL_USE_TLS=(bool, True)
+    DEBUG=(bool, False), 
+    EMAIL_PORT=(int, 587), 
+    EMAIL_USE_TLS=(bool, True),
+    SECRET_KEY=(str, get_random_secret_key())
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -135,6 +140,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "staticfiles/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = "mediafiles/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

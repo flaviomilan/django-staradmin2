@@ -6,41 +6,30 @@
 
 ## Setup
 
-### Environment File
 
-Create an .env file to store project settings. This project uses django-dotenv to automatically export environment variables when the project is localized.
+### Development
 
-```
-DEBUG=True
-POSTGRES_NAME=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_HOST=127.0.0.1
-POSTGRES_PORT=5432
-SECRET_KEY=""
+Uses the default Django development server.
 
-EMAIL_HOST=''
-EMAIL_PORT=587
-EMAIL_HOST_USER=""
-EMAIL_HOST_PASSWORD=""
-EMAIL_USE_TLS=True
-DEFAULT_FROM_EMAIL=""
-```
+1. Rename *.env.dev-sample* to *.env.dev*.
+1. Update the environment variables in the *docker-compose.yml* and *.env.dev* files.
+1. Build the images and run the containers:
 
-## Installing dependencies
+    ```sh
+    $ docker-compose up -d --build
+    ```
 
-### Development requirements
+    Test it out at [http://localhost:8000](http://localhost:8000). The "app" folder is mounted into the container and your code changes apply automatically.
 
-> `$ pip install -r requirements/development.txt`
+### Production
 
+Uses gunicorn + nginx.
 
-### Running project locally
+1. Rename *.env.prod-sample* to *.env.prod* and *.env.prod.db-sample* to *.env.prod.db*. Update the environment variables.
+1. Build the images and run the containers:
 
-1 - Create database
+    ```sh
+    $ docker-compose -f docker-compose.prod.yml up -d --build
+    ```
 
->  `$ docker-compose up -d db`
-
-
-2 - Running project
-
-> `$ make runserver`
+    Test it out at [http://localhost:1337](http://localhost:1337). No mounted folders. To apply changes, the image must be re-built.
