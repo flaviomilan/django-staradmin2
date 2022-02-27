@@ -1,0 +1,62 @@
+{% extends "registration/_base.html" %}
+{% load static %}
+{% block registration_body %}
+<div class="auth-form-transparent text-left p-3">
+  <div class="brand-logo">
+    <img src="{% static 'images/logo.svg' %}" alt="logo">
+  </div>
+  {% if form.errors %}
+  <p class="alert alert-danger">Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+  {% if user.is_authenticated %}
+  <p class="alert alert-danger">Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+  {% else %}
+  <p class="alert alert-info">Please login to see this page.</p>
+  {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}" class="pt-3">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleInputEmail">{{ form.username.label_tag }}</label>
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent border-right-0">
+            <i class="ti-user text-primary"></i>
+          </span>
+        </div>
+        <input type="text" name="username" autofocus="" class="form-control form-control-sm border-left-0"
+          autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword">{{ form.password.label_tag }}</label>
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent border-right-0">
+            <i class="ti-lock text-primary"></i>
+          </span>
+        </div>
+        <input type="password" name="password" class="form-control form-control-sm border-left-0"
+          autocomplete="current-password" required="" id="id_password">
+      </div>
+    </div>
+    <div class="my-2 d-flex justify-content-between align-items-center">
+      <div class="form-check">
+        <label class="form-check-label text-muted">
+          <input type="checkbox" class="form-check-input">
+          Keep me signed in
+        </label>
+      </div>
+      <a href="{% url 'password_reset' %}" class="auth-link text-black">Forgot password?</a>
+    </div>
+    <div class="my-3">
+      <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Login">
+      <input type="hidden" name="next" value="{{ next }}">
+    </div>
+  </form>
+</div>
+{% endblock %}
